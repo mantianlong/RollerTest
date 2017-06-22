@@ -125,7 +125,7 @@
                                     </li>
                                     <li class="list-group-item">
                                         <span class="pull-right">
-                                            <a href="#"><input type="button" class="btn btn-xs btn-white" value="Click" /></a>
+                                            @Html.ActionLink("Click", "Index", new { Controller="SampleTestingRecord", RollerSampleInfoId = p.RollerSampleInfoID }, new { @class = "btn btn-xs btn-white" })
                                         </span>
                                         <span class="label label-info">2</span> 中间过程
                                     </li>

@@ -869,8 +869,6 @@
     <Content Include="Views\RollerBaseStations\Details.cshtml" />
     <Content Include="Views\RollerBaseStations\Edit.cshtml" />
     <Content Include="Views\RollerBaseStations\Index.cshtml" />
-    <Content Include="Views\TestBlock\RealtimeAction.cshtml" />
-    <Content Include="Views\TestBlock\EditSampleTestingInfo.cshtml" />
     <Content Include="Views\SampleTestingRecord\Index.cshtml" />
     <Content Include="Views\UserRole\RoleIndex.cshtml" />
     <Content Include="Views\UserRole\UserIndex.cshtml" />
