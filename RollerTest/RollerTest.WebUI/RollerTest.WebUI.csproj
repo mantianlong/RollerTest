@@ -235,7 +235,7 @@
     <Compile Include="Controllers\RollerBaseStandardsController.cs" />
     <Compile Include="Controllers\SampleTestingRecordController.cs" />
     <Compile Include="Controllers\TestBlockController.cs" />
-    <Compile Include="Controllers\TestReportBeforeTestController.cs" />
+    <Compile Include="Controllers\TestReportController.cs" />
     <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="ExternalProgram\CdioControl.cs" />
     <Compile Include="ExternalProgram\CdioCs.cs" />
@@ -878,7 +878,8 @@
     <Content Include="Views\UserRole\UserRolesIndex.cshtml" />
     <Content Include="Views\UserRole\Index.cshtml" />
     <Content Include="Views\UserRole\LoginName.cshtml" />
-    <Content Include="Views\TestReportBeforeTest\Index.cshtml" />
+    <Content Include="Views\TestReport\Index.cshtml" />
+    <Content Include="Views\TestReport\AfterTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RollerTest.Domain\RollerTest.Domain.csproj">

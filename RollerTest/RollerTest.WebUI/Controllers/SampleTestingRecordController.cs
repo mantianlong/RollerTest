@@ -24,23 +24,20 @@ namespace RollerTest.WebUI.Controllers
         {
             SampleTestingRecordViewModel testingrecordviewModel = new SampleTestingRecordViewModel()
             {
-                rollerrecordinfos = recordrepo.RollerRecordInfos.Where(x => x.RollerSampleInfoID == RollerSampleInfoId),
+                rollerrecordinfos = recordrepo.RollerRecordInfos.Where(x => x.RollerSampleInfoID == RollerSampleInfoId).Include(x=>x.RollerSampleInfo),
+                SampleId=RollerSampleInfoId
             };
-            ViewData["RollerSampleInfoId"] = RollerSampleInfoId;
             return View(testingrecordviewModel);
         }
         public ViewResult CreateSampleTestingRecord(int RollerSampleInfoID)
         {
             RollerSampleInfo rollersampleinfo = samplerepo.RollerSampleInfos.FirstOrDefault(a => a.RollerSampleInfoID == RollerSampleInfoID);
-            ViewData["SampleID"] = rollersampleinfo.SampleID;
-            return View("EditSampleTestingRecord", new RollerRecordInfo() { RollerSampleInfoID = RollerSampleInfoID });
+            return View("EditSampleTestingRecord", new RollerRecordInfo() { RollerSampleInfoID = RollerSampleInfoID,RollerSampleInfo= rollersampleinfo });
         }
         [HttpGet]
         public ViewResult EditSampleTestingRecord(int RollerRecordInfoID)
         {
             RollerRecordInfo rollerrecordinfo = recordrepo.RollerRecordInfos.FirstOrDefault(a => a.RollerRecordInfoID == RollerRecordInfoID);
-            ViewData["RollerSampleInfoID"] = rollerrecordinfo.RollerSampleInfoID;
-            ViewData["SampleID"] = rollerrecordinfo.RollerSampleInfo.SampleID;
             return View(rollerrecordinfo);
         }
         [HttpPost]
@@ -56,15 +53,14 @@ namespace RollerTest.WebUI.Controllers
             else
             {
                 RollerSampleInfo rollersamleinfo = samplerepo.RollerSampleInfos.FirstOrDefault(a => a.RollerSampleInfoID == rollerrecordinfo.RollerSampleInfoID);
-                ViewData["SampleID"] = rollersamleinfo.SampleID;
-                return View("EditSampleTestingRecord", new RollerRecordInfo() { RollerSampleInfoID = rollerrecordinfo.RollerSampleInfoID });
+                return View("EditSampleTestingRecord", new RollerRecordInfo() { RollerSampleInfoID = rollerrecordinfo.RollerSampleInfoID, RollerSampleInfo = rollersamleinfo });
             }
         }
         [HttpPost]
         public ActionResult DeleteSampleTestingRecord(int RollerRecordInfoId, int RollerSampleInfoID)
         {
             recordrepo.DeleteRollerRecordInfo(RollerRecordInfoId);
-            return RedirectToAction("Index", new { RollerSampleInfoID = RollerSampleInfoID });
+            return RedirectToAction("Index", new { RollerSampleInfoId = RollerSampleInfoID });
         }
     }
 }

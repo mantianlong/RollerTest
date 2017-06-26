@@ -1,7 +1,7 @@
 ﻿@model RollerTest.Domain.Entities.RollerTestreportInfo
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "AfterTest";
 }
 
 <div class="container-fluid">
@@ -9,28 +9,36 @@
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-12">
-                    <form method="post" class="form-horizontal" action="~/TestReportBeforeTest/EditTestReportBeforeTest">
+                    <form method="post" class="form-horizontal" action="~/TestReport/EditAfterReport">
                         @Html.HiddenFor(x => x.RollerTestReportInfoID)
                         @Html.HiddenFor(x => x.RollerSampleInfoID)
-                        @Html.HiddenFor(x => x.EndStatus)
-                        @Html.HiddenFor(x => x.EndText)
-                        @Html.HiddenFor(x => x.FinalStatus)
+                        @Html.HiddenFor(x => x.StartStatus)
+                        @Html.HiddenFor(x => x.StartText)
                         @Html.HiddenFor(x => x.StartTime)
                         @Html.HiddenFor(x => x.EndTime)
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-offset-1 col-sm-2 control-label">试验前性能</label>
+                            <label class="col-offset-1 col-sm-2 control-label">试验后性能</label>
                             <div class="col-sm-1 radio-primary media-middle">
-                                @Html.RadioButtonFor(x => x.StartStatus, true, new { @id = "radio1", @name = "rdolstState" })正常
+                                @Html.RadioButtonFor(x => x.EndStatus, true, new { @id = "radio1", @name = "rdolstState" })正常
                             </div>
                             <div class="col-sm-1 radio-primary aligncenter">
-                                @Html.RadioButtonFor(x => x.StartStatus, false, new { @id = "radio2", @name = "rdolstState" })异常
+                                @Html.RadioButtonFor(x => x.EndStatus, false, new { @id = "radio2", @name = "rdolstState" })异常
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">样品信息</label>
-                            <div class="col-sm-8">@Html.EditorFor(x => x.StartText)</div>
+                            <div class="col-sm-8">@Html.EditorFor(x => x.EndText)</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-offset-1 col-sm-2 control-label">最终状态</label>
+                            <div class="col-sm-1 radio-primary media-middle">
+                                @Html.RadioButtonFor(x => x.FinalStatus, true, new { @id = "radio1", @name = "rdolstState" })正常
+                            </div>
+                            <div class="col-sm-1 radio-primary aligncenter">
+                                @Html.RadioButtonFor(x => x.FinalStatus, false, new { @id = "radio2", @name = "rdolstState" })异常
+                            </div>
                         </div>
                         <div class="col-lg-offset-5">
                             <input class="btn btn-primary" type="submit" value="提交" />
