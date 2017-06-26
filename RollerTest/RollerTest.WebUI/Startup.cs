@@ -13,11 +13,11 @@ namespace RollerTest.WebUI
         {
             ConfigureAuth(app);
 
-            GlobalConfiguration.Configuration.UseSqlServerStorage("HangfireConnection");
-            app.UseHangfireDashboard();
-            app.UseHangfireServer();
-            EFDbContext context = new EFDbContext();
-            context.Database.CreateIfNotExists();
+           // GlobalConfiguration.Configuration.UseSqlServerStorage("HangfireConnection");
+           //app.UseHangfireDashboard();
+           //app.UseHangfireServer();
+            //EFDbContext context = new EFDbContext();
+            //context.Database.CreateIfNotExists();
             app.MapSignalR();
         }
     }

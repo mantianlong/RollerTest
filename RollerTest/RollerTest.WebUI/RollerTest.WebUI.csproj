@@ -235,6 +235,7 @@
     <Compile Include="Controllers\RollerBaseStandardsController.cs" />
     <Compile Include="Controllers\SampleTestingRecordController.cs" />
     <Compile Include="Controllers\TestBlockController.cs" />
+    <Compile Include="Controllers\TestReportBeforeTestController.cs" />
     <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="ExternalProgram\CdioControl.cs" />
     <Compile Include="ExternalProgram\CdioCs.cs" />
@@ -739,7 +740,9 @@
     <Content Include="Scripts\plugins\video\responsible-video.js" />
     <Content Include="Scripts\plugins\wow\wow.min.js" />
     <Content Include="Views\SampleTestingRecord\EditSampleTestingRecord.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -875,6 +878,7 @@
     <Content Include="Views\UserRole\UserRolesIndex.cshtml" />
     <Content Include="Views\UserRole\Index.cshtml" />
     <Content Include="Views\UserRole\LoginName.cshtml" />
+    <Content Include="Views\TestReportBeforeTest\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RollerTest.Domain\RollerTest.Domain.csproj">

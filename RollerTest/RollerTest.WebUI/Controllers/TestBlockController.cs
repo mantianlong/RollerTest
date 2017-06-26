@@ -39,7 +39,7 @@ namespace RollerTest.WebUI.Controllers
             return PartialView(rollerrealtimeInfo);
         }
 
-        public void OpenTest(int StationId)
+        public ActionResult OpenTest(int StationId)
         {
             if (baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).State == false)
             {
@@ -47,9 +47,13 @@ namespace RollerTest.WebUI.Controllers
                 IniFileControl.GetInstance().OpenRollerTimeSwitch(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station);
                 RollerSampleInfo rollersampleinfo = samplerepo.RollerSampleInfos.FirstOrDefault(x => x.RollerBaseStationID == StationId && x.State == true);
                 samplerepo.setsampleStartTime(rollersampleinfo);
-                DealControl.GetInstance().setRollerLimit(StationId, rollersampleinfo.UpLimit, rollersampleinfo.DnLimit);
+                //DealControl.GetInstance().setRollerLimit(StationId, rollersampleinfo.UpLimit, rollersampleinfo.DnLimit);
+                //RedirectToAction("Index", "TestReportBeforeTest", new { RollerSampleInfoId = rollersampleinfo.RollerSampleInfoID });
+                return RedirectToAction("Index","TestReportBeforeTest", new { RollerSampleInfoId = rollersampleinfo.RollerSampleInfoID });
             }
-            Response.Redirect("/TestBlock/Index");
+            else {
+                return RedirectToAction("Index");
+            }
         }
         public void CloseTest(int StationId)
         {
