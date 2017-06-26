@@ -48,31 +48,12 @@
         <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Live Chart Example</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li>
-                                <a href="#">Config option 1</a>
-                            </li>
-                            <li>
-                                <a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
+                    <h5>应力曲线图</h5>
                 </div>
                 <div class="ibox-content">
-                    @*<div class="flot-chart">
-                        <div class="flot-chart-content" id="flot-line-chart"></div>
-                    </div>*@
+                    <div class="flot-chart">
+                        <div class="flot-chart-content" id="flot-moving-@p.RollerBaseStation.Mark"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,7 +61,7 @@
                 <div class="tabs-container">
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#tab-A-@i"> <i class="fa fa-laptop">数据</i></a></li>
-                        <li class=""><a data-toggle="tab" href="#tab-C-@i"><i class="fa fa-exchange">过程</i></a></li>
+                        <li class=""><a data-toggle="tab" href="#tab-B-@i"><i class="fa fa-exchange">过程</i></a></li>
                     </ul>
                     <div class="tab-content">
                         <div id="tab-A-@i" class="tab-pane active">
@@ -91,21 +72,26 @@
                                             <div class="feed-element">
                                                 <div class="media-body">
                                                     <small>Time</small>
-                                                    <h1 id="time-@p.RollerBaseStation.Station" class="no-margins"></h1>
+                                                    <h1 id="time-@p.RollerBaseStation.Mark" class="no-margins"></h1>
                                                     <div class="pull-right">
                                                         <div>
-                                                            @Html.ActionLink("开启", "OpenTimer", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white fa fa-thumbs-up" })
-                                                            @Html.ActionLink("暂停", "PauseTimer", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white fa fa-thumbs-up" })
-                                                            @Html.ActionLink("清零", "CleanTimer", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white fa fa-thumbs-up" })
+                                                            @Html.ActionLink("开启", "OpenTimer", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white" })
+                                                            @Html.ActionLink("暂停", "PauseTimer", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white" })
+                                                            @Html.ActionLink("清零", "CleanTimer", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white" })
                                                         </div>
-                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="feed-element">
                                                 <div class="media-body">
                                                     <small>Force</small>
-                                                    <h1 id="data-@p.RollerBaseStation.Station" class="no-margins"></h1>
+                                                    <h1 id="data-@p.RollerBaseStation.Mark" class="no-margins"></h1>
+                                                    <div class="pull-right">
+                                                        <div>
+                                                            @Html.ActionLink("开启", "OpenForce", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white" })
+                                                            @Html.ActionLink("关闭", "CloseForce", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white" })
+                                                        </div>
+                                                    </div>
                                                     </div>
                                                 </div>
                                         </div>
@@ -114,7 +100,7 @@
                                 </div>
                                 </div>
                         </div>
-                        <div id="tab-C-@i" class="tab-pane">
+                        <div id="tab-B-@i" class="tab-pane">
                             <div class="panel-body">
                                 <ul class="list-group clear-list m-t">
                                     <li class="list-group-item fist-item">
@@ -145,74 +131,1037 @@
     </div>
     i++;
 }
+<div>
+    @*<p id="time-1" class="hidden"></p>
+    <p id="time-2" class="hidden"></p>
+    <p id="time-3" class="hidden"></p>
+    <p id="time-4" class="hidden"></p>
+    <p id="time-5" class="hidden"></p>
+    <p id="time-6" class="hidden"></p>
+    <p id="time-7" class="hidden"></p>
+    <p id="time-8" class="hidden"></p>
+    <p id="time-9" class="hidden"></p>
+    <p id="time-1#" class="hidden"></p>
+    <p id="time-11" class="hidden"></p>
+    <p id="time-12" class="hidden"></p>
+    <p id="data-1" class="hidden"></p>
+    <p id="data-2" class="hidden"></p>
+    <p id="data-3" class="hidden"></p>
+    <p id="data-4" class="hidden"></p>
+    <p id="data-5" class="hidden"></p>
+    <p id="data-6" class="hidden"></p>
+    <p id="data-7" class="hidden"></p>
+    <p id="data-8" class="hidden"></p>
+    <p id="data-9" class="hidden"></p>
+    <p id="data-10" class="hidden"></p>
+    <p id="data-11" class="hidden"></p>
+    <p id="data-12" class="hidden"></p>*@
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-1"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-2"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-3"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-4"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-5"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-6"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-7"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-8"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-9"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-10"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-11"></div>
+    </div>
+    <div class="flot-chart hidden">
+        <div class="flot-chart-content" id="flot-moving-12"></div>
+    </div>
+</div>
 
 @section scripts{
     <script src="~/Scripts/jquery.signalR-2.2.2.js"></script>
     <script src="~/signalr/hubs"></script>
+    <script src="~/plugins/flot"></script>
     <script>
         $(function () {
             var time = $.connection.timeHub;
             var data = $.connection.dataHub;
-            time.client.addNewTimeToPage = function (station, time) {
-                x1 = document.getElementById("time-1#");
-                x2 = document.getElementById("time-2#");
-                x3 = document.getElementById("time-3#");
-                x4 = document.getElementById("time-4#");
-                x5 = document.getElementById("time-5#");
-                x6 = document.getElementById("time-6#");
-                x7 = document.getElementById("time-7#");
-                x8 = document.getElementById("time-8#");
-                x9 = document.getElementById("time-9#");
-                x10 = document.getElementById("time-10#");
-                x11 = document.getElementById("time-11#");
-                x12 = document.getElementById("time-12#");
-                switch (station) {
-                    case "1#": x1.innerHTML =time; break;
-                    case "2#": x2.innerHTML = time; break;
-                    case "3#": x3.innerHTML = time; break;
-                    case "4#": x4.innerHTML = time; break;
-                    case "5#": x5.innerHTML = time; break;
-                    case "6#": x6.innerHTML = time; break;
-                    case "7#": x7.innerHTML = time; break;
-                    case "8#": x8.innerHTML = time; break;
-                    case "9#": x9.innerHTML = time; break;
-                    case "10#": x10.innerHTML = time; break;
-                    case "11#": x11.innerHTML = time; break;
-                    case "12#": x12.innerHTML = time; break;
-                }
+            var data1 = "";
+            var data2 = "";
+            var data3 = "";
+            var data4 = "";
+            var data5 = "";
+            var data6 = "";
+            var data7 = "";
+            var data8 = "";
+            var data9 = "";
+            var data10 = "";
+            var data11 = "";
+            var data12 = "";
+            time.client.addNewTimeToPage = function (rollertime) {
+                x1 = document.getElementById("time-1");
+                x2 = document.getElementById("time-2");
+                x3 = document.getElementById("time-3");
+                x4 = document.getElementById("time-4");
+                x5 = document.getElementById("time-5");
+                x6 = document.getElementById("time-6");
+                x7 = document.getElementById("time-7");
+                x8 = document.getElementById("time-8");
+                x9 = document.getElementById("time-9");
+                x10 = document.getElementById("time-10");
+                x11 = document.getElementById("time-11");
+                x12 = document.getElementById("time-12");
+                arr = rollertime.split("|");
+                x1.innerHTML = arr[0];
+                x2.innerHTML = arr[1];
+                x3.innerHTML = arr[2];
+                x4.innerHTML = arr[3];
+                x5.innerHTML = arr[4];
+                x6.innerHTML = arr[5];
+                x7.innerHTML = arr[6];
+                x8.innerHTML = arr[7];
+                x9.innerHTML = arr[8];
+                x10.innerHTML = arr[9];
+                x11.innerHTML = arr[10];
+                x12.innerHTML = arr[11];
             }
             data.client.addNewDataToPage = function (station, data) {
-                y1 = document.getElementById("data-1#");
-                y2 = document.getElementById("data-2#");
-                y3 = document.getElementById("data-3#");
-                y4 = document.getElementById("data-4#");
-                y5 = document.getElementById("data-5#");
-                y6 = document.getElementById("data-6#");
-                y7 = document.getElementById("data-7#");
-                y8 = document.getElementById("data-8#");
-                y9 = document.getElementById("data-9#");
-                y10 = document.getElementById("data-10#");
-                y11 = document.getElementById("data-11#");
-                y12 = document.getElementById("data-12#");
+                y1 = document.getElementById("data-1");
+                y2 = document.getElementById("data-2");
+                y3 = document.getElementById("data-3");
+                y4 = document.getElementById("data-4");
+                y5 = document.getElementById("data-5");
+                y6 = document.getElementById("data-6");
+                y7 = document.getElementById("data-7");
+                y8 = document.getElementById("data-8");
+                y9 = document.getElementById("data-9");
+                y10 = document.getElementById("data-10");
+                y11 = document.getElementById("data-11");
+                y12 = document.getElementById("data-12");
 
                 switch (station) {
-                    case "AI1-1-01": y1.innerHTML = data+"N"; break;
-                    case "AI1-1-02": y2.innerHTML = data + "N"; break;
-                    case "AI1-1-03": y3.innerHTML = data + "N"; break;
-                    case "AI1-1-04": y4.innerHTML = data + "N"; break;
-                    case "AI1-1-05": y5.innerHTML = data + "N"; break;
-                    case "AI1-1-06": y6.innerHTML = data + "N"; break;
-                    case "AI1-1-07": y7.innerHTML = data + "N"; break;
-                    case "AI1-1-08": y8.innerHTML = data + "N"; break;
-                    case "AI1-1-09": y9.innerHTML = data + "N"; break;
-                    case "AI1-1-10": y10.innerHTML = data + "N"; break;
-                    case "AI1-1-11": y11.innerHTML = data + "N"; break;
-                    case "AI1-1-12": y12.innerHTML = data + "N"; break;
+                    case "AI1-1-01": y1.innerHTML = data + "N";data1=data;break;
+                    case "AI1-1-02": y2.innerHTML = data + "N"; data2 = data; break;
+                    case "AI1-1-03": y3.innerHTML = data + "N"; data3 = data; break;
+                    case "AI1-1-04": y4.innerHTML = data + "N"; data4 = data; break;
+                    case "AI1-1-05": y5.innerHTML = data + "N"; data5 = data; break;
+                    case "AI1-1-06": y6.innerHTML = data + "N"; data6 = data; break;
+                    case "AI1-1-07": y7.innerHTML = data + "N"; data7 = data; break;
+                    case "AI1-1-08": y8.innerHTML = data + "N"; data8 = data; break;
+                    case "AI1-1-09": y9.innerHTML = data + "N"; data9 = data; break;
+                    case "AI1-1-10": y10.innerHTML = data + "N"; data10 = data; break;
+                    case "AI1-1-11": y11.innerHTML = data + "N"; data11 = data; break;
+                    case "AI1-1-12": y12.innerHTML = data + "N"; data12 = data; break;
 
                 }
             }
             $.connection.hub.start().done();
 
+
+            var container1 = $("#flot-moving-1");
+            var container2 = $("#flot-moving-2");
+            var container3 = $("#flot-moving-3");
+            var container4 = $("#flot-moving-4");
+            var container5 = $("#flot-moving-5");
+            var container6 = $("#flot-moving-6");
+            var container7 = $("#flot-moving-7");
+            var container8 = $("#flot-moving-8");
+            var container9 = $("#flot-moving-9");
+            var container10 = $("#flot-moving-10");
+            var container11 = $("#flot-moving-11");
+            var container12 = $("#flot-moving-12");
+
+            var maximum1 = container1.outerWidth() / 2 || 300;
+            var maximum2 = container2.outerWidth() / 2 || 300;
+            var maximum3 = container3.outerWidth() / 2 || 300;
+            var maximum4 = container4.outerWidth() / 2 || 300;
+            var maximum5 = container5.outerWidth() / 2 || 300;
+            var maximum6 = container6.outerWidth() / 2 || 300;
+            var maximum7 = container7.outerWidth() / 2 || 300;
+            var maximum8 = container8.outerWidth() / 2 || 300;
+            var maximum9 = container9.outerWidth() / 2 || 300;
+            var maximum10 = container10.outerWidth() / 2 || 300;
+            var maximum11 = container11.outerWidth() / 2 || 300;
+            var maximum12 = container12.outerWidth() / 2 || 300;
+
+
+            var datadata1 = [];
+            var datadata2 = [];
+            var datadata3 = [];
+            var datadata4 = [];
+            var datadata5 = [];
+            var datadata6 = [];
+            var datadata7 = [];
+            var datadata8 = [];
+            var datadata9 = [];
+            var datadata10 = [];
+            var datadata11 = [];
+            var datadata12 = [];
+
+            function getRandomData1() {
+
+                if (datadata1.length) {
+                    datadata1 = datadata1.slice(1);
+                }
+
+                while (datadata1.length < maximum1) {
+                    datadata1.push(data1);
+                }
+                var res = [];
+                for (var i = 0; i < datadata1.length; ++i) {
+                    res.push([i, datadata1[i]]);
+                }
+
+                return res;
+            }       
+            series1 = [{
+                data: getRandomData1(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData2() {
+
+                if (datadata2.length) {
+                    datadata2 = datadata2.slice(1);
+                }
+
+                while (datadata2.length < maximum2) {
+                    datadata2.push(data2);
+                }
+                var res = [];
+                for (var i = 0; i < datadata2.length; ++i) {
+                    res.push([i, datadata2[i]]);
+                }
+
+                return res;
+            }
+            series2 = [{
+                data: getRandomData2(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData3() {
+
+                if (datadata3.length) {
+                    datadata3 = datadata3.slice(1);
+                }
+
+                while (datadata3.length < maximum3) {
+                    datadata3.push(data3);
+                }
+                var res = [];
+                for (var i = 0; i < datadata3.length; ++i) {
+                    res.push([i, datadata3[i]]);
+                }
+
+                return res;
+            }
+            series3 = [{
+                data: getRandomData3(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData4() {
+
+                if (datadata4.length) {
+                    datadata4 = datadata4.slice(1);
+                }
+
+                while (datadata4.length < maximum4) {
+                    datadata4.push(data4);
+                }
+                var res = [];
+                for (var i = 0; i < datadata4.length; ++i) {
+                    res.push([i, datadata4[i]]);
+                }
+
+                return res;
+            }
+            series4 = [{
+                data: getRandomData4(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData5() {
+
+                if (datadata5.length) {
+                    datadata5 = datadata5.slice(1);
+                }
+
+                while (datadata5.length < maximum5) {
+                    datadata5.push(data5);
+                }
+                var res = [];
+                for (var i = 0; i < datadata5.length; ++i) {
+                    res.push([i, datadata5[i]]);
+                }
+
+                return res;
+            }
+            series5 = [{
+                data: getRandomData5(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData6() {
+
+                if (datadata6.length) {
+                    datadata6 = datadata6.slice(1);
+                }
+
+                while (datadata6.length < maximum6) {
+                    datadata6.push(data6);
+                }
+                var res = [];
+                for (var i = 0; i < datadata6.length; ++i) {
+                    res.push([i, datadata6[i]]);
+                }
+
+                return res;
+            }
+            series6 = [{
+                data: getRandomData6(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData7() {
+
+                if (datadata7.length) {
+                    datadata7 = datadata7.slice(1);
+                }
+
+                while (datadata7.length < maximum7) {
+                    datadata7.push(data7);
+                }
+                var res = [];
+                for (var i = 0; i < datadata7.length; ++i) {
+                    res.push([i, datadata7[i]]);
+                }
+
+                return res;
+            }
+            series7 = [{
+                data: getRandomData7(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData8() {
+
+                if (datadata8.length) {
+                    datadata8 = datadata8.slice(1);
+                }
+
+                while (datadata8.length < maximum8) {
+                    datadata8.push(data8);
+                }
+                var res = [];
+                for (var i = 0; i < datadata8.length; ++i) {
+                    res.push([i, datadata8[i]]);
+                }
+
+                return res;
+            }
+            series8 = [{
+                data: getRandomData8(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData9() {
+
+                if (datadata9.length) {
+                    datadata9 = datadata9.slice(1);
+                }
+
+                while (datadata9.length < maximum9) {
+                    datadata9.push(data9);
+                }
+                var res = [];
+                for (var i = 0; i < datadata9.length; ++i) {
+                    res.push([i, datadata9[i]]);
+                }
+
+                return res;
+            }
+            series9 = [{
+                data: getRandomData9(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData10() {
+
+                if (datadata10.length) {
+                    datadata10 = datadata10.slice(1);
+                }
+
+                while (datadata10.length < maximum10) {
+                    datadata10.push(data10);
+                }
+                var res = [];
+                for (var i = 0; i < datadata10.length; ++i) {
+                    res.push([i, datadata10[i]]);
+                }
+
+                return res;
+            }
+            series10 = [{
+                data: getRandomData10(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData11() {
+
+                if (datadata11.length) {
+                    datadata11 = datadata11.slice(1);
+                }
+
+                while (datadata11.length < maximum11) {
+                    datadata11.push(data11);
+                }
+                var res = [];
+                for (var i = 0; i < datadata11.length; ++i) {
+                    res.push([i, datadata11[i]]);
+                }
+
+                return res;
+            }
+            series11 = [{
+                data: getRandomData11(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+            function getRandomData12() {
+
+                if (datadata12.length) {
+                    datadata12 = datadata12.slice(1);
+                }
+
+                while (datadata12.length < maximum12) {
+                    datadata12.push(data12);
+                }
+                var res = [];
+                for (var i = 0; i < datadata12.length; ++i) {
+                    res.push([i, datadata12[i]]);
+                }
+
+                return res;
+            }
+            series12 = [{
+                data: getRandomData12(),
+                lines: {
+                    fill: true
+                }
+            }];
+
+
+            var plot1 = $.plot(container1, series1, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot2 = $.plot(container2, series2, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot3 = $.plot(container3, series3, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot4 = $.plot(container4, series4, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot5 = $.plot(container5, series5, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot6 = $.plot(container6, series6, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot7 = $.plot(container7, series7, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot8 = $.plot(container8, series8, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot9 = $.plot(container9, series9, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot10 = $.plot(container10, series10, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot11 = $.plot(container11, series11, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+            var plot12 = $.plot(container12, series12, {
+                grid: {
+                    color: "#999999",
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#ffffff", "#ffffff"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function (axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min) ; x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "#fff"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                colors: ["#1ab394"],
+                xaxis: {
+                    tickFormatter: function () {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 5000
+                },
+                legend: {
+                    show: true
+                }
+            });
+
+
+
+            // Update the random dataset at 25FPS for a smoothly-animating chart
+
+            setInterval(function updateRandom() {
+                series1[0].data = getRandomData1();
+                plot1.setData(series1);
+                plot1.draw();
+                series2[0].data = getRandomData2();
+                plot2.setData(series2);
+                plot2.draw();
+                series3[0].data = getRandomData3();
+                plot3.setData(series3);
+                plot3.draw();
+                series4[0].data = getRandomData4();
+                plot4.setData(series4);
+                plot4.draw();
+                series5[0].data = getRandomData5();
+                plot5.setData(series5);
+                plot5.draw();
+                series6[0].data = getRandomData6();
+                plot6.setData(series6);
+                plot6.draw();
+                series7[0].data = getRandomData7();
+                plot7.setData(series7);
+                plot7.draw();
+                series8[0].data = getRandomData8();
+                plot8.setData(series8);
+                plot8.draw();
+                series9[0].data = getRandomData9();
+                plot9.setData(series9);
+                plot9.draw();
+                series10[0].data = getRandomData10();
+                plot10.setData(series10);
+                plot10.draw();
+                series11[0].data = getRandomData11();
+                plot11.setData(series11);
+                plot11.draw();
+                series12[0].data = getRandomData12();
+                plot12.setData(series12);
+                plot12.draw();
+            }, 1000);
 
         })
 
