@@ -1,5 +1,7 @@
 ﻿using Hangfire;
 using Microsoft.AspNet.SignalR;
+using RollerTest.Domain.Abstract;
+using RollerTest.Domain.Concrete;
 using RollerTest.Domain.Entities;
 using RollerTest.WebUI.IniFiles;
 using System;
@@ -21,13 +23,30 @@ namespace RollerTest.WebUI.ExternalProgram
         private static readonly object locker = new object();
         private CancellationTokenSource Receivects;
         private CancellationTokenSource Dealcts;
+        private CancellationTokenSource Queuects;
         private Task ReceiveTask;
         private Task DealTask;
+        private Task QueueTask;
         private bool connectState=false;
         private List<ChannelData> channelList = new List<ChannelData>();
         private List<string> channelNum = new List<string>();
         private RollerLimit rollerLimit = new RollerLimit();
         private FaultData faultdata = new FaultData();
+        private EFRecordinfoRepository recordrepo;
+        private EFSampleinfoRepository samplerepo;
+        private Queue<int> Queue1 = new Queue<int>(5);
+        private Queue<int> Queue2 = new Queue<int>(5);
+        private Queue<int> Queue3 = new Queue<int>(5);
+        private Queue<int> Queue4 = new Queue<int>(5);
+        private Queue<int> Queue5 = new Queue<int>(5);
+        private Queue<int> Queue6 = new Queue<int>(5);
+        private Queue<int> Queue7 = new Queue<int>(5);
+        private Queue<int> Queue8 = new Queue<int>(5);
+        private Queue<int> Queue9 = new Queue<int>(5);
+        private Queue<int> Queue10 = new Queue<int>(5);
+        private Queue<int> Queue11 = new Queue<int>(5);
+        private Queue<int> Queue12 = new Queue<int>(5);
+        private JudgeLimitSwitch judgelimitswitch = new JudgeLimitSwitch();
 
         private object m_lock = new object();
         private const int ReceiveDataCount = 4048;
@@ -40,13 +59,13 @@ namespace RollerTest.WebUI.ExternalProgram
         private byte[] m_TmpData;
         //所有待处理的包数据
         private List<PackData> m_lstPackData = new List<PackData>();
-
         private CdioControl cdioControl = CdioControl.GetInstance();
         private IniFileControl inifileControl = IniFileControl.GetInstance();
 
         private DealControl()
         {
-         
+            recordrepo = new EFRecordinfoRepository();
+            samplerepo = new EFSampleinfoRepository();
         }
         public RollerLimit getRollerLimit()
         {
@@ -93,10 +112,13 @@ namespace RollerTest.WebUI.ExternalProgram
                 connectState = this.SocketConnectState();
                 Receivects = new CancellationTokenSource();
                 Dealcts = new CancellationTokenSource();
+                Queuects = new CancellationTokenSource();
                 ReceiveTask = new Task(() => ReceiveData(), Receivects.Token);
                 DealTask = new Task(() => DealData(), Dealcts.Token);
+                QueueTask = new Task(() => QueueData(), Queuects.Token);
                 ReceiveTask.Start();
                 DealTask.Start();
+                QueueTask.Start();
                 this.GetSignalInfo();
             }
         }
@@ -264,6 +286,7 @@ namespace RollerTest.WebUI.ExternalProgram
                             DealComData();
                             //处理完包数据后，将m_NetData中用过的数据清除
                             // 一直到 位置nNetPos 的m_NetData的数据已经用过
+                            
                             m_NetData.RemoveRange(0, nNetPos);
                             nNetPos = 0;
                         }
@@ -307,7 +330,7 @@ namespace RollerTest.WebUI.ExternalProgram
                             ChannelData channeldata = new ChannelData()
                             {
                                 channel = p,
-                                data=sArray[j]
+                                data =(int) sArray[j].AsFloat()
                             };
                             channelList.Add(channeldata);
                             j++;
@@ -328,6 +351,7 @@ namespace RollerTest.WebUI.ExternalProgram
             if (channelList!=null)
             {
                 HandleGetData(channelList);
+                channelList.Clear();
             }
         }
 
@@ -335,153 +359,181 @@ namespace RollerTest.WebUI.ExternalProgram
         {
             foreach(var p in info)
             {
-                Send(p.channel, p.data);
-                if (JudgeLimit(p)) {
-                    IniFileControl.GetInstance().CloseRollerTimeSwitch(faultdata.station);
-                };
+                SendQueueData(p);
             }
         }
-        private bool JudgeLimit(ChannelData channeldata)
-        {
-            float data = float.Parse(channeldata.data);
-            switch (channeldata.channel)
-            {
-                case "AI1-1-01":
-                    {
-                        if (data < rollerLimit.DnLimit1 && data > rollerLimit.UpLimit1) {
-                            faultdata.station = "1#";
-                            faultdata.UpLimit = rollerLimit.UpLimit1.ToString();
-                            faultdata.DnLimit = rollerLimit.DnLimit1.ToString();
-                            faultdata.Value = channeldata.data;
-                            return true;
-                        }
-                        break;
-                    } 
-                case "AI1-1-02":
-                    {
-                        if (data < rollerLimit.DnLimit2 && data > rollerLimit.UpLimit2)
-                        {
-                            faultdata.station = "2#";
-                            faultdata.UpLimit = rollerLimit.UpLimit2.ToString();
-                            faultdata.DnLimit = rollerLimit.DnLimit2.ToString();
-                            faultdata.Value = channeldata.data;
-                            return true;
-                        }
-                        break;
-                    }
-                case "AI1-1-03":
-                    {
-                        if (data < rollerLimit.DnLimit3 && data > rollerLimit.UpLimit3)
-                        {
-                            faultdata.station = "3#";
-                            faultdata.UpLimit = rollerLimit.UpLimit3.ToString();
-                            faultdata.DnLimit = rollerLimit.DnLimit3.ToString();
-                            faultdata.Value = channeldata.data;
-                            return true;
-                        }
-                        break;
-                    }
-                case "AI1-1-04":
-                    {
-                        if (data < rollerLimit.DnLimit4 && data > rollerLimit.UpLimit4)
-                        {
-                            faultdata.station = "4#";
-                            faultdata.UpLimit = rollerLimit.UpLimit4.ToString();
-                            faultdata.DnLimit = rollerLimit.DnLimit4.ToString();
-                            faultdata.Value = channeldata.data;
-                            return true;
-                        }
-                        break;
-                    }
-                case "AI1-1-05":
-                    {
-                        if (data < rollerLimit.DnLimit5 && data > rollerLimit.UpLimit5)
-                        {
-                            faultdata.station = "5#";
-                            faultdata.UpLimit = rollerLimit.UpLimit5.ToString();
-                            faultdata.DnLimit = rollerLimit.DnLimit5.ToString();
-                            faultdata.Value = channeldata.data;
-                            return true;
-                        }
-                        break;
-                    }
-                case "AI1-1-06":
-                    {
-                        if (data < rollerLimit.DnLimit6 && data > rollerLimit.UpLimit6)
-                        {
-                            faultdata.station = "6#";
-                            faultdata.UpLimit = rollerLimit.UpLimit6.ToString();
-                            faultdata.DnLimit = rollerLimit.DnLimit6.ToString();
-                            faultdata.Value = channeldata.data;
-                            return true;
-                        }
-                        break;
-                    }
-                case "AI1-1-07":
-                    {
-                        if (data < rollerLimit.DnLimit7 && data > rollerLimit.UpLimit7)
-                        {
-                            faultdata.station = "7#";
-                            faultdata.UpLimit = rollerLimit.UpLimit7.ToString();
-                            faultdata.DnLimit = rollerLimit.DnLimit7.ToString();
-                            faultdata.Value = channeldata.data;
-                            return true;
-                        }
-                        break;
-                    }
-                case "AI1-1-08":
-                    if (data < rollerLimit.DnLimit8 && data > rollerLimit.UpLimit8)
-                    {
-                        faultdata.station = "8#";
-                        faultdata.UpLimit = rollerLimit.UpLimit8.ToString();
-                        faultdata.DnLimit = rollerLimit.DnLimit8.ToString();
-                        faultdata.Value = channeldata.data;
-                        return true;
-                    }
-                    break;
-                case "AI1-1-09":
-                    if (data < rollerLimit.DnLimit9 && data > rollerLimit.UpLimit9)
-                    {
-                        faultdata.station = "9#";
-                        faultdata.UpLimit = rollerLimit.UpLimit9.ToString();
-                        faultdata.DnLimit = rollerLimit.DnLimit9.ToString();
-                        faultdata.Value = channeldata.data;
-                        return true;
-                    }
-                    break;
-                case "AI1-1-10":
-                    if (data < rollerLimit.DnLimit10 && data > rollerLimit.UpLimit10)
-                    {
-                        faultdata.station = "10#";
-                        faultdata.UpLimit = rollerLimit.UpLimit10.ToString();
-                        faultdata.DnLimit = rollerLimit.DnLimit10.ToString();
-                        faultdata.Value = channeldata.data;
-                        return true;
-                    }
-                    break;
-                case "AI1-1-11":
-                    if (data < rollerLimit.DnLimit11 && data > rollerLimit.UpLimit11)
-                    {
-                        faultdata.station = "11#";
-                        faultdata.UpLimit = rollerLimit.UpLimit11.ToString();
-                        faultdata.DnLimit = rollerLimit.DnLimit11.ToString();
-                        faultdata.Value = channeldata.data;
-                        return true;
-                    }
-                    break;
-                case "AI1-1-12":
-                    if (data < rollerLimit.DnLimit12 && data > rollerLimit.UpLimit12)
-                    {
-                        faultdata.station = "12#";
-                        faultdata.UpLimit = rollerLimit.UpLimit12.ToString();
-                        faultdata.DnLimit = rollerLimit.DnLimit12.ToString();
-                        faultdata.Value = channeldata.data;
-                        return true;
-                    }
-                    break;
+
+        private void SendQueueData(ChannelData channeldata) {
+            switch (channeldata.channel) {
+                case "AI1-1-01": if (getLimitSwitch("1#")){ Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("1#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-02": if (getLimitSwitch("2#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("2#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-03": if (getLimitSwitch("3#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("3#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-04": if (getLimitSwitch("4#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("4#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-05": if (getLimitSwitch("5#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("5#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-06": if (getLimitSwitch("6#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("6#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-07": if (getLimitSwitch("7#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("7#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-08": if (getLimitSwitch("8#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("8#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-09": if (getLimitSwitch("9#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("9#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-10": if (getLimitSwitch("10#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("10#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-11": if (getLimitSwitch("11#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("11#")) { Queue1.Enqueue(channeldata.data); }; break;
+                case "AI1-1-12": if (getLimitSwitch("12#")) { Send(channeldata.channel, channeldata.data); }; if (getJudgeSwitch("12#")) { Queue1.Enqueue(channeldata.data); }; break;
+                default:break;
             }
+        }
+        private void QueueData() {
+            while (!Queuects.IsCancellationRequested)
+            {
+                if (Queue1.Count > 5){if (JudegLimit(Queue1, "1#")) { setJudgeSwitch("1#", false); };Queue1.Dequeue();}
+                if (Queue2.Count > 5) { if (JudegLimit(Queue2, "2#")) { setJudgeSwitch("2#", false); }; Queue2.Dequeue(); }
+                if (Queue3.Count > 5) { if (JudegLimit(Queue3, "3#")) { setJudgeSwitch("3#", false); }; Queue3.Dequeue(); }
+                if (Queue4.Count > 5) { if (JudegLimit(Queue4, "4#")) { setJudgeSwitch("4#", false); }; Queue4.Dequeue(); }
+                if (Queue5.Count > 5) { if (JudegLimit(Queue5, "5#")) { setJudgeSwitch("5#", false); }; Queue5.Dequeue(); }
+                if (Queue6.Count > 5) { if (JudegLimit(Queue6, "6#")) { setJudgeSwitch("6#", false); }; Queue6.Dequeue(); }
+                if (Queue7.Count > 5) { if (JudegLimit(Queue7, "7#")) { setJudgeSwitch("7#", false); }; Queue7.Dequeue(); }
+                if (Queue8.Count > 5) { if (JudegLimit(Queue8, "8#")) { setJudgeSwitch("8#", false); }; Queue8.Dequeue(); }
+                if (Queue9.Count > 5) { if (JudegLimit(Queue9, "9#")) { setJudgeSwitch("9#", false); }; Queue9.Dequeue(); }
+                if (Queue10.Count > 5) { if (JudegLimit(Queue10, "10#")) { setJudgeSwitch("10#", false); }; Queue10.Dequeue(); }
+                if (Queue11.Count > 5) { if (JudegLimit(Queue11, "11#")) { setJudgeSwitch("11#", false); }; Queue11.Dequeue(); }
+                if (Queue12.Count > 5) { if (JudegLimit(Queue12, "12#")) { setJudgeSwitch("12#", false); }; Queue12.Dequeue(); }
+
+            }
+
+        }
+        private bool JudegLimit(Queue<int> queue,string station)
+        {
+             if (queue.Max() < rollerLimit.DnLimit1 || queue.Max() > rollerLimit.UpLimit1)
+                {
+                    faultdata.station = station;
+                    faultdata.UpLimit = rollerLimit.UpLimit1.ToString();
+                    faultdata.DnLimit = rollerLimit.DnLimit1.ToString();
+                    faultdata.Value = queue.Max().ToString();
+                    Task faulttask = new Task(() => HandleFaultData());
+                    faulttask.Start();
+                    faulttask.Wait();
+                    return true;
+                }   
             return false;
         }
+
+        private void HandleFaultData()
+        {
+            IniFileControl.GetInstance().CloseRollerTimeSwitch(faultdata.station);
+            recordrepo.SaveRollerRecordInfo(new RollerRecordInfo()
+            {
+                CurrentTime = DateTime.Now,
+                SampleStatus = false,
+                RollerSampleInfoID = samplerepo.RollerSampleInfos.FirstOrDefault(x => x.RollerBaseStation.Station == faultdata.station && x.State == true).RollerSampleInfoID,
+                TotalTime = IniFileControl.GetInstance().getRollerTime(faultdata.station),
+                RecordInfo = "上限值：" + faultdata.UpLimit + "|下限值：" + faultdata.DnLimit + "|实际值：" + faultdata.Value
+            });
+        }
+        public void setLimitSwitch(string station,bool state) {
+            switch (station)
+            {
+                case "1#": rollerLimit.LimitSwitch1 = state; break;
+                case "2#": rollerLimit.LimitSwitch2 = state; break;
+                case "3#": rollerLimit.LimitSwitch3 = state; break;
+                case "4#": rollerLimit.LimitSwitch4 = state; break;
+                case "5#": rollerLimit.LimitSwitch5 = state; break;
+                case "6#": rollerLimit.LimitSwitch6 = state; break;
+                case "7#": rollerLimit.LimitSwitch7 = state; break;
+                case "8#": rollerLimit.LimitSwitch8 = state; break;
+                case "9#": rollerLimit.LimitSwitch9 = state; break;
+                case "10#": rollerLimit.LimitSwitch10 = state; break;
+                case "11#": rollerLimit.LimitSwitch11 = state; break;
+                case "12#": rollerLimit.LimitSwitch12 = state; break;
+                default: break;
+            }
+        }
+        public bool getLimitSwitch(string station) {
+            bool state=false;
+            switch (station)
+            {
+                case "1#": state=rollerLimit.LimitSwitch1; break;
+                case "2#": state = rollerLimit.LimitSwitch2; break;
+                case "3#": state = rollerLimit.LimitSwitch3; break;
+                case "4#": state = rollerLimit.LimitSwitch4; break;
+                case "5#": state = rollerLimit.LimitSwitch5; break;
+                case "6#": state = rollerLimit.LimitSwitch6; break;
+                case "7#": state = rollerLimit.LimitSwitch7; break;
+                case "8#": state = rollerLimit.LimitSwitch8; break;
+                case "9#": state = rollerLimit.LimitSwitch9; break;
+                case "10#": state = rollerLimit.LimitSwitch10; break;
+                case "11#": state = rollerLimit.LimitSwitch11; break;
+                case "12#": state = rollerLimit.LimitSwitch12; break;
+                default: break;
+            }
+            return state;
+        }
+        public void OpenAllLimitSwtich() {
+            rollerLimit.LimitSwitch1 = true;
+            rollerLimit.LimitSwitch2 = true;
+            rollerLimit.LimitSwitch3 = true;
+            rollerLimit.LimitSwitch4 = true;
+            rollerLimit.LimitSwitch5 = true;
+            rollerLimit.LimitSwitch6 = true;
+            rollerLimit.LimitSwitch7 = true;
+            rollerLimit.LimitSwitch8 = true;
+            rollerLimit.LimitSwitch9 = true;
+            rollerLimit.LimitSwitch10 = true;
+            rollerLimit.LimitSwitch11 = true;
+            rollerLimit.LimitSwitch12 = true;
+        }
+        public void CloseAllLimitSwtich()
+        {
+            rollerLimit.LimitSwitch1 = false;
+            rollerLimit.LimitSwitch2 = false;
+            rollerLimit.LimitSwitch3 = false;
+            rollerLimit.LimitSwitch4 = false;
+            rollerLimit.LimitSwitch5 = false;
+            rollerLimit.LimitSwitch6 = false;
+            rollerLimit.LimitSwitch7 = false;
+            rollerLimit.LimitSwitch8 = false;
+            rollerLimit.LimitSwitch9 = false;
+            rollerLimit.LimitSwitch10 = false;
+            rollerLimit.LimitSwitch11 = false;
+            rollerLimit.LimitSwitch12 = false;
+        }
+        public void setJudgeSwitch(string station, bool state) {
+            switch (station)
+            {
+                case "1#": judgelimitswitch.switch1 = state; break;
+                case "2#": judgelimitswitch.switch2 = state; break;
+                case "3#": judgelimitswitch.switch3 = state; break;
+                case "4#": judgelimitswitch.switch4 = state; break;
+                case "5#": judgelimitswitch.switch5 = state; break;
+                case "6#": judgelimitswitch.switch6 = state; break;
+                case "7#": judgelimitswitch.switch7 = state; break;
+                case "8#": judgelimitswitch.switch8 = state; break;
+                case "9#": judgelimitswitch.switch9 = state; break;
+                case "10#": judgelimitswitch.switch10 = state; break;
+                case "11#": judgelimitswitch.switch11 = state; break;
+                case "12#": judgelimitswitch.switch12 = state; break;
+                default: break;
+            }
+        }
+        public bool getJudgeSwitch(string station)
+        {
+            bool state = false;
+            switch (station)
+            {
+                case "1#": state = judgelimitswitch.switch1; break;
+                case "2#": state = judgelimitswitch.switch2; break;
+                case "3#": state = judgelimitswitch.switch3; break;
+                case "4#": state = judgelimitswitch.switch4; break;
+                case "5#": state = judgelimitswitch.switch5; break;
+                case "6#": state = judgelimitswitch.switch6; break;
+                case "7#": state = judgelimitswitch.switch7; break;
+                case "8#": state = judgelimitswitch.switch8; break;
+                case "9#": state = judgelimitswitch.switch9; break;
+                case "10#": state = judgelimitswitch.switch10; break;
+                case "11#": state = judgelimitswitch.switch11; break;
+                case "12#": state = judgelimitswitch.switch12; break;
+                default: break;
+            }
+            return state;
+        }
+
 
         private List<string> GetChannel(string res)
         {
@@ -499,14 +551,23 @@ namespace RollerTest.WebUI.ExternalProgram
         // 操作方法
 
         //发送“服务器退出提示”
-        void sendExit()
+        private void sendExit()
         {
 
             Receivects.Cancel();
             Dealcts.Cancel();
+            Queuects.Cancel();
+            ClearQueue();
             s.Shutdown(SocketShutdown.Both);
             s.Close();
         }
+        private void ClearQueue()
+        {
+            Queue1.Clear(); Queue2.Clear(); Queue3.Clear(); Queue4.Clear();
+            Queue5.Clear(); Queue6.Clear(); Queue7.Clear(); Queue8.Clear();
+            Queue9.Clear(); Queue10.Clear(); Queue11.Clear(); Queue12.Clear();
+        }
+
         bool CheckSocket()
         {
             bool res = false;
@@ -517,7 +578,7 @@ namespace RollerTest.WebUI.ExternalProgram
             }
             return res;
         }
-        public void Send(string station, string data)
+        public void Send(string station, int data)
         {
             var dataHub = GlobalHost.ConnectionManager.GetHubContext("dataHub");
             dataHub.Clients.All.addNewDataToPage(station, data);
@@ -529,7 +590,7 @@ namespace RollerTest.WebUI.ExternalProgram
     public class ChannelData
     {
         public string channel;
-        public string data;
+        public int data;
     }
     public class FaultData
     {
@@ -537,6 +598,21 @@ namespace RollerTest.WebUI.ExternalProgram
         public string UpLimit;
         public string DnLimit;
         public string Value;
+    }
+
+    public class JudgeLimitSwitch {
+        public bool switch1;
+        public bool switch2;
+        public bool switch3;
+        public bool switch4;
+        public bool switch5;
+        public bool switch6;
+        public bool switch7;
+        public bool switch8;
+        public bool switch9;
+        public bool switch10;
+        public bool switch11;
+        public bool switch12;
     }
     public class PackData
     {

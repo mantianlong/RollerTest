@@ -47,7 +47,7 @@ namespace RollerTest.WebUI.Controllers
         // 详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RollerBaseStationID,Device,Station,State")] RollerBaseStation rollerBaseStation)
+        public ActionResult Create([Bind(Include = "RollerBaseStationID,Device,Station,Mark,State")] RollerBaseStation rollerBaseStation)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace RollerTest.WebUI.Controllers
         // 详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RollerBaseStationID,Device,Station,State")] RollerBaseStation rollerBaseStation)
+        public ActionResult Edit([Bind(Include = "RollerBaseStationID,Device,Station,Mark,State")] RollerBaseStation rollerBaseStation)
         {
             if (ModelState.IsValid)
             {

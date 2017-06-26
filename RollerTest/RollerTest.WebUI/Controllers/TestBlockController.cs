@@ -45,6 +45,8 @@ namespace RollerTest.WebUI.Controllers
             {
                 baserepo.ChangeStationState(StationId, true);
                 IniFileControl.GetInstance().OpenRollerTimeSwitch(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station);
+                DealControl.GetInstance().setLimitSwitch(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station, true);
+                DealControl.GetInstance().setJudgeSwitch(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station, true);
                 RollerSampleInfo rollersampleinfo = samplerepo.RollerSampleInfos.FirstOrDefault(x => x.RollerBaseStationID == StationId && x.State == true);
                 samplerepo.setsampleStartTime(rollersampleinfo);
                 DealControl.GetInstance().setRollerLimit(StationId, rollersampleinfo.UpLimit, rollersampleinfo.DnLimit);
@@ -59,6 +61,8 @@ namespace RollerTest.WebUI.Controllers
                 int sampleId = samplerepo.RollerSampleInfos.FirstOrDefault(x => x.State == true && x.RollerBaseStationID == StationId).RollerSampleInfoID;
                 samplerepo.setsampleState(sampleId, false);
                 samplerepo.setsampleEndTime(sampleId);
+                DealControl.GetInstance().setLimitSwitch(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station, false);
+                DealControl.GetInstance().setJudgeSwitch(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station, false);
                 IniFileControl.GetInstance().CloseRollerTimeSwitch(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station);
                 IniFileControl.GetInstance().CleanRollerTime(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station);
             }
@@ -77,6 +81,16 @@ namespace RollerTest.WebUI.Controllers
         public void CleanTimer(int StationId)
         {
             IniFileControl.GetInstance().CleanRollerTime(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station);
+            Response.Redirect("/TestBlock/Index");
+        }
+        public void OpenForce(int StationId)
+        {
+            DealControl.GetInstance().setLimitSwitch(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station,true);
+            Response.Redirect("/TestBlock/Index");
+        }
+        public void CloseForce(int StationId)
+        {
+            DealControl.GetInstance().setLimitSwitch(baserepo.RollerBaseStations.FirstOrDefault(x => x.RollerBaseStationID == StationId).Station, false);
             Response.Redirect("/TestBlock/Index");
         }
 

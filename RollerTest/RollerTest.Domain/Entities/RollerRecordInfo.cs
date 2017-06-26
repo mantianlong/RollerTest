@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace RollerTest.Domain.Entities
 {
@@ -19,7 +18,7 @@ namespace RollerTest.Domain.Entities
         [Required(ErrorMessage = "请输入样品状态")]
         public bool SampleStatus { get; set; }
         public DateTime CurrentTime { get; set; }
-        public TimeSpan TotalTime { get; set; }
+        public string TotalTime { get; set; }
         [Required(ErrorMessage = "请输入样品信息")]
         public string RecordInfo { get; set; }
     }

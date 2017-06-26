@@ -1,21 +1,19 @@
 ﻿@model RollerTest.WebUI.Models.ApplicationUser
 
 <div class="dropdown profile-element">
-    <span>
-        <img alt="image" class="img-circle" src="~/Images/profile_small.jpg" />
-    </span>
     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
         <span class="clear">
             <span class="block m-t-xs">
-                <strong class="font-bold">@Model.UserName.ToString()</strong>
-            </span> <span class="text-muted text-xs block">工程师 <b class="caret"></b></span>
+                <strong class="font-bold">欢迎
+                @Model.UserName.ToString()
+                ！</strong>
         </span>
+            </span>
     </a>
-    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-        <li><a href="@Url.Action("Profile", "AppViews")">待添加</a></li>
-        <li><a href="@Url.Action("Contacts", "AppViews")">待添加</a></li>
-        <li><a href="@Url.Action("Inbox", "Mailbox")">待添加</a></li>
+    @*<ul class="dropdown-menu animated fadeInRight m-t-xs">
+        <li>@Model.Email</li>
+        <li>@Model.Roles</li>
         <li class="divider"></li>
-        <li><a href="@Url.Action("Login", "Pages")">退出登录</a></li>
-    </ul>
+        <li><a href="@Url.Action("Login", "Account")">退出登录</a></li>
+    </ul>*@
 </div>
