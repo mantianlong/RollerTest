@@ -28,13 +28,13 @@
                                             <td width="7%">@p.SampleStatus</td>
                                             <td width="51%">@p.RecordInfo</td>
                                             <td width="6%">
-                                                @Html.ActionLink("编辑", "EditSampleTestingRecord", new { p.RollerRecordInfoID }, new { @class = "btn btn-white btn-sm" })
+                                                @Html.ActionLink("编辑", "EditSampleTestingRecord", new { RollerRecordInfoID=p.RollerRecordInfoID }, new { @class = "btn btn-white btn-sm" })
                                             </td>
                                             <td width="6%">
                                                 @using (Html.BeginForm("DeleteSampleTestingRecord", "SampleTestingRecord"))
                                                 {
                                                     @Html.Hidden("RollerRecordInfoId", p.RollerRecordInfoID)
-                                                    @Html.Hidden("RollerSampleInfoID", ViewData["RollerSampleInfoId"])
+                                                    @Html.Hidden("RollerSampleInfoID", Model.SampleId)
                                                     <button class="btn btn-white btn-sm" type="submit">删除</button>
                                                 }
                                             </td>
@@ -42,7 +42,7 @@
                                     }
                                 </tbody>
                             </table>
-                            @Html.ActionLink("增加", "CreateSampleTestingRecord", new { Controller = "SampleTestingRecord", RollerSampleInfoID = ViewData["RollerSampleInfoID"] })
+                            @Html.ActionLink("增加", "CreateSampleTestingRecord", new { Controller = "SampleTestingRecord", RollerSampleInfoID = Model.SampleId})
                         </div>
                     </div>
 

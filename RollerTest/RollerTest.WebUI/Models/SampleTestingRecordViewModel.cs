@@ -9,6 +9,7 @@ namespace RollerTest.WebUI.Models
     public class SampleTestingRecordViewModel
     {
         public IEnumerable<RollerRecordInfo> rollerrecordinfos { get; set; }
-        public RollerRecordInfo rollerrecordinfo { get; set; }
+        public int SampleId { get; set; }
+
     }
 }
