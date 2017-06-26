@@ -15,9 +15,5 @@ namespace RollerTest.WebUI.SignalR
             Clients.All.hello();
             
         }
-        //public void Send(string station,string time)
-        //{
-        //    Clients.All.addNewTimeToPage(station, time);
-        //}
     }
 }

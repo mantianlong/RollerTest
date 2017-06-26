@@ -49,7 +49,7 @@ namespace RollerTest.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 rollerrecordinfo.CurrentTime = DateTime.Now;
-                rollerrecordinfo.TotalTime = TimeSpan.Parse("8:00:00");
+                rollerrecordinfo.TotalTime = "ddd";
                 recordrepo.SaveRollerRecordInfo(rollerrecordinfo);
                 return RedirectToAction("Index", new { RollerSampleInfoID = rollerrecordinfo.RollerSampleInfoID });
             }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Threading.Tasks;
 
 namespace RollerTest.WebUI.Controllers
 {
@@ -103,6 +104,34 @@ namespace RollerTest.WebUI.Controllers
         {
             DealControl dealControl = DealControl.GetInstance();
             dealControl.DealConnectDis();
+            Response.Redirect("/ControlBlock/Index");
+        }
+        public void OpenTimePort()
+        {
+            Task task = new Task(()=> {
+                IniFileControl.GetInstance().OpenAllTimeSwitch();
+            });
+            task.Start();
+            task.Wait();
+            Response.Redirect("/ControlBlock/Index");
+        }
+        public void CloseTimePort()
+        {
+            Task task = new Task(() => {
+                IniFileControl.GetInstance().CloseAllTimeSwitch();
+            });
+            task.Start();
+            task.Wait();
+            Response.Redirect("/ControlBlock/Index");
+        }
+        public void OpenForcePort()
+        {
+            DealControl.GetInstance().OpenAllLimitSwtich();
+            Response.Redirect("/ControlBlock/Index");
+        }
+        public void CloseForcePort()
+        {
+            DealControl.GetInstance().CloseAllLimitSwtich();
             Response.Redirect("/ControlBlock/Index");
         }
 

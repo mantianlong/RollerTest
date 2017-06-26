@@ -80,7 +80,7 @@
                 <div class="tabs-container">
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#tab-A-@i"> <i class="fa fa-laptop">数据</i></a></li>
-                        <li class=""><a data-toggle="tab" href="#tab-C-@i"><i class="fa fa-exchange">过程</i></a></li>
+                        <li class=""><a data-toggle="tab" href="#tab-B-@i"><i class="fa fa-exchange">过程</i></a></li>
                     </ul>
                     <div class="tab-content">
                         <div id="tab-A-@i" class="tab-pane active">
@@ -98,7 +98,6 @@
                                                             @Html.ActionLink("暂停", "PauseTimer", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white fa fa-thumbs-up" })
                                                             @Html.ActionLink("清零", "CleanTimer", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white fa fa-thumbs-up" })
                                                         </div>
-                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -106,6 +105,12 @@
                                                 <div class="media-body">
                                                     <small>Force</small>
                                                     <h1 id="data-@p.RollerBaseStation.Station" class="no-margins"></h1>
+                                                    <div class="pull-right">
+                                                        <div>
+                                                            @Html.ActionLink("开启", "OpenForce", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white fa fa-thumbs-up" })
+                                                            @Html.ActionLink("关闭", "CloseForce", new { StationId = p.RollerBaseStationID }, new { @class = "btn btn-xs btn-white fa fa-thumbs-up" })
+                                                        </div>
+                                                    </div>
                                                     </div>
                                                 </div>
                                         </div>
@@ -114,7 +119,7 @@
                                 </div>
                                 </div>
                         </div>
-                        <div id="tab-C-@i" class="tab-pane">
+                        <div id="tab-B-@i" class="tab-pane">
                             <div class="panel-body">
                                 <ul class="list-group clear-list m-t">
                                     <li class="list-group-item fist-item">
@@ -145,6 +150,32 @@
     </div>
     i++;
 }
+<div>
+    <p id="time-1#" class="hidden"></p>
+    <p id="time-2#" class="hidden"></p>
+    <p id="time-3#" class="hidden"></p>
+    <p id="time-4#" class="hidden"></p>
+    <p id="time-5#" class="hidden"></p>
+    <p id="time-6#" class="hidden"></p>
+    <p id="time-7#" class="hidden"></p>
+    <p id="time-8#" class="hidden"></p>
+    <p id="time-9#" class="hidden"></p>
+    <p id="time-10#" class="hidden"></p>
+    <p id="time-11#" class="hidden"></p>
+    <p id="time-12#" class="hidden"></p>
+    <p id="data-1#" class="hidden"></p>
+    <p id="data-2#" class="hidden"></p>
+    <p id="data-3#" class="hidden"></p>
+    <p id="data-4#" class="hidden"></p>
+    <p id="data-5#" class="hidden"></p>
+    <p id="data-6#" class="hidden"></p>
+    <p id="data-7#" class="hidden"></p>
+    <p id="data-8#" class="hidden"></p>
+    <p id="data-9#" class="hidden"></p>
+    <p id="data-10#" class="hidden"></p>
+    <p id="data-11#" class="hidden"></p>
+    <p id="data-12#" class="hidden"></p>
+</div>
 
 @section scripts{
     <script src="~/Scripts/jquery.signalR-2.2.2.js"></script>
@@ -153,7 +184,7 @@
         $(function () {
             var time = $.connection.timeHub;
             var data = $.connection.dataHub;
-            time.client.addNewTimeToPage = function (station, time) {
+            time.client.addNewTimeToPage = function (rollertime) {
                 x1 = document.getElementById("time-1#");
                 x2 = document.getElementById("time-2#");
                 x3 = document.getElementById("time-3#");
@@ -166,20 +197,19 @@
                 x10 = document.getElementById("time-10#");
                 x11 = document.getElementById("time-11#");
                 x12 = document.getElementById("time-12#");
-                switch (station) {
-                    case "1#": x1.innerHTML =time; break;
-                    case "2#": x2.innerHTML = time; break;
-                    case "3#": x3.innerHTML = time; break;
-                    case "4#": x4.innerHTML = time; break;
-                    case "5#": x5.innerHTML = time; break;
-                    case "6#": x6.innerHTML = time; break;
-                    case "7#": x7.innerHTML = time; break;
-                    case "8#": x8.innerHTML = time; break;
-                    case "9#": x9.innerHTML = time; break;
-                    case "10#": x10.innerHTML = time; break;
-                    case "11#": x11.innerHTML = time; break;
-                    case "12#": x12.innerHTML = time; break;
-                }
+                arr = rollertime.split("|");
+                x1.innerHTML = arr[0];
+                x2.innerHTML = arr[1];
+                x3.innerHTML = arr[2];
+                x4.innerHTML = arr[3];
+                x5.innerHTML = arr[4];
+                x6.innerHTML = arr[5];
+                x7.innerHTML = arr[6];
+                x8.innerHTML = arr[7];
+                x9.innerHTML = arr[8];
+                x10.innerHTML = arr[9];
+                x11.innerHTML = arr[10];
+                x12.innerHTML = arr[11];
             }
             data.client.addNewDataToPage = function (station, data) {
                 y1 = document.getElementById("data-1#");
